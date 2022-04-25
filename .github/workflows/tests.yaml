@@ -1,0 +1,36 @@
+---
+name: tests
+
+"on":
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@master
+        with:
+          dockerfile: Dockerfile
+          verbose: true
+
+      # - name: Run base tests
+      #   run: make test-x86
+
+      # - name: Run s3 tests
+      #   run: make test-s3-x86
+
+      - name: Setup python
+        uses: actions/setup-python@v3
+
+      - name: Run pre-commit hooks
+        run: |
+          pip install pre-commit
+          make check
