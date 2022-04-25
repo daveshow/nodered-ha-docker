@@ -1,4 +1,4 @@
-FROM nodered/node-red:latest-12-minimal
+FROM nodered/node-red:latest-16-minimal
 
 RUN npm install --no-optional node-red-contrib-actionflows \
     node-red-contrib-home-assistant-websocket \
