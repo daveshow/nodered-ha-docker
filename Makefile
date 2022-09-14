@@ -111,7 +111,7 @@ install-hooks:
 
 .PHONY: pre-commit
 pre-commit:
-	@curl -o pre-commit.pyz https://github.com/pre-commit/pre-commit/releases/download/v${PRECOMMIT_VERSION}/pre-commit-${PRECOMMIT_VERSION}.pyz
+	@curl -LJ -o pre-commit.pyz https://github.com/pre-commit/pre-commit/releases/download/v${PRECOMMIT_VERSION}/pre-commit-${PRECOMMIT_VERSION}.pyz
 	@python3 pre-commit.pyz install
 	@python3 pre-commit.pyz install --hook-type commit-msg
 	@rm pre-commit.pyz
