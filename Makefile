@@ -107,7 +107,7 @@ prev-tag-commit-message:
 
 .PHONY: install-hooks
 install-hooks:
-	pre-commit install
+	@pre-commit install
 
 .PHONY: pre-commit
 pre-commit:
