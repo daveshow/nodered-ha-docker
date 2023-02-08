@@ -1,4 +1,3 @@
-DOCKER_TAG ?= cadvisor-docker-$(USER)
 MAKE               := make --no-print-directory
 CHDIR_SHELL        := $(SHELL)
 PRECOMMIT_VERSION  := 2.9.2
@@ -51,6 +50,7 @@ CURRENT_TAG_MINOR  := "v$(CURRENT_VERSION_MINOR)"
 CURRENT_TAG_MAJOR  := "v$(CURRENT_VERSION_MAJOR)"
 
 GIT_STAGING := $(shell git show-ref --verify --quiet "refs/heads/staging_$(CURRENT_VERSION_MICRO)"; echo $$?)
+GIT_RELEASE := $(shell git show-ref --verify --quiet "refs/heads/release_$(CURRENT_VERSION_MICRO)"; echo $$?)
 
 ifeq ($(PREFIX),)
     PREFIX := ${HOME}
@@ -106,16 +106,16 @@ prev-tag-commit-message:
 	@echo "$(PREV_FROM_TAG_MESSAGES)"
 
 .PHONY: install-hooks
-install-hooks:
+install-hooks: pre-commit
 	@pre-commit install
 
 .PHONY: pre-commit
 pre-commit:
+
 	@curl -LJ -o pre-commit.pyz https://github.com/pre-commit/pre-commit/releases/download/v${PRECOMMIT_VERSION}/pre-commit-${PRECOMMIT_VERSION}.pyz
 	@python3 pre-commit.pyz install
 	@python3 pre-commit.pyz install --hook-type commit-msg
 	@rm pre-commit.pyz
-
 
 .PHONY: test
 test:
