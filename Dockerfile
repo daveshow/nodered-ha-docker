@@ -1,4 +1,4 @@
-FROM nodered/node-red:latest-16-minimal
+FROM nodered/node-red:latest-18-minimal
 
 RUN npm install --omit=optional \
     node-red-contrib-actionflows@2.1.2 \
