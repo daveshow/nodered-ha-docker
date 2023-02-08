@@ -1,7 +1,6 @@
-DOCKER_TAG ?= cadvisor-docker-$(USER)
 MAKE               := make --no-print-directory
 CHDIR_SHELL        := $(SHELL)
-
+PRECOMMIT_VERSION  := 2.9.2
 DESCRIBE           := $(shell git describe --match "v*" --always --tags)
 DESCRIBE_PARTS     := $(subst -, ,$(DESCRIBE))
 
@@ -43,11 +42,14 @@ BRANCH_NAME        := $(shell git rev-parse --abbrev-ref HEAD)
 
 TAG_MESSAGE         = "$(TIME) $(DATE) $(AUTHOR) $(BRANCH_NAME)"
 COMMIT_MESSAGE     := $(shell git log --format=%B -n 1 $(COMMIT))
-PREV_FROM_TAG_MESSAGES	:= $(shell git log $(shell git describe --tags --abbrev=0)..HEAD --pretty=format:"%s")
+PREV_FROM_TAG_MESSAGES	:= $(shell git log $(shell git describe --tags --abbrev=0)..HEAD --pretty=format:"%s" --no-merges --invert-grep --grep=Revert)
 
 CURRENT_TAG_MICRO  := "v$(CURRENT_VERSION_MICRO)"
 CURRENT_TAG_MINOR  := "v$(CURRENT_VERSION_MINOR)"
 CURRENT_TAG_MAJOR  := "v$(CURRENT_VERSION_MAJOR)"
+
+GIT_STAGING := $(shell git show-ref --verify --quiet "refs/heads/staging_$(CURRENT_VERSION_MICRO)"; echo $$?)
+GIT_RELEASE := $(shell git show-ref --verify --quiet "refs/heads/release_$(CURRENT_VERSION_MICRO)"; echo $$?)
 
 ifeq ($(PREFIX),)
     PREFIX := ${HOME}
@@ -103,8 +105,15 @@ prev-tag-commit-message:
 	@echo "$(PREV_FROM_TAG_MESSAGES)"
 
 .PHONY: install-hooks
-install-hooks:
+install-hooks: pre-commit
 	@pre-commit install
+
+.PHONY: pre-commit
+pre-commit:
+	@curl -o pre-commit.pyz https://github.com/pre-commit/pre-commit/releases/download/v${PRECOMMIT_VERSION}/pre-commit-${PRECOMMIT_VERSION}.pyz
+	@python3 pre-commit.pyz install
+	@python3 pre-commit.pyz install --hook-type commit-msg
+	@rm pre-commit.pyz
 
 .PHONY: test
 test:
@@ -129,10 +138,11 @@ clean:
 makestaging:
 	@git checkout main
 	@git pull
-# ifeq ($(shell git show-ref --verify --quiet "refs/heads/staging_$(CURRENT_VERSION_MICRO)"),)
-# 	@git branch -D staging_$(CURRENT_VERSION_MICRO)
-# endif
+ifeq ($(GIT_STAGING),0)
+	@git checkout staging_$(CURRENT_VERSION_MICRO)
+else
 	@git checkout -b staging_$(CURRENT_VERSION_MICRO)
+endif
 
 .PHONY: maketagmicro
 maketagmicro: makestaging
