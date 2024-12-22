@@ -1,4 +1,4 @@
-FROM node:16 as builder
+FROM node:16 AS builder
 WORKDIR /usr/src/node-red
 COPY package.json ./
 RUN npm install --omit=optional && \
