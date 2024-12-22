@@ -18,3 +18,4 @@ renovate.json
 build.log
 data/
 tests/
+.cz.toml
