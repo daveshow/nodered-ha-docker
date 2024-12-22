@@ -1,10 +1,10 @@
-FROM node:16 AS builder
+FROM nodered/node-red:3.1.15-18-minimal AS builder
 WORKDIR /usr/src/node-red
 COPY package.json ./
 RUN npm install --omit=optional && \
     npm cache clean --force
 
-FROM nodered/node-red:3.1.15-16-minimal
+FROM nodered/node-red:3.1.15-18-minimal
 WORKDIR /usr/src/node-red
 COPY --from=builder --chown=node-red:node-red /usr/src/node-red/node_modules ./node_modules
 COPY . .
