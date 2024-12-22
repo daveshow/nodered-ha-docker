@@ -5,7 +5,7 @@ Docker image for Node-RED with Home Assistant support
 ## Usage
 
 ```
-docker run -d -p 1880:1880 -e "TZ=America/New_York" -v /path/to/nodered:/data --name nodered-ha daveshow/nodered-ha-docker
+docker run -d -p 1880:1880 -e "TZ=America/New_York" -v /data:/data --name nodered-ha daveshow/nodered-ha-docker
 ```
 
 ## Environment Variables
