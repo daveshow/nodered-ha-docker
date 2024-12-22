@@ -1,3 +1,12 @@
+## v0.3.1 (2024-12-22)
+
+### Fix
+
+- update the nodejs 18
+- **deps**: update dependency node-red-contrib-influxdb to v0.7.0
+- **deps**: update dependency node-red-node-timeswitch to v1.1.1
+- **deps**: update dependency node-red-contrib-home-assistant-websocket to v0.74.2
+
 ## v0.3.0 (2024-12-22)
 
 ### Feat
