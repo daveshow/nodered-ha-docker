@@ -1,3 +1,9 @@
+## v0.4.3 (2025-06-15)
+
+### Fix
+
+- **deps**: update dependency node-red-contrib-home-assistant-websocket to v0.77.0
+
 ## v0.4.2 (2025-02-23)
 
 ## v0.4.1 (2025-01-03)
