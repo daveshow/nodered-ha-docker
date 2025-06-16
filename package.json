@@ -4,7 +4,7 @@
   "description": "Node-RED with custom contrib nodes",
   "dependencies": {
     "node-red-contrib-actionflows": "2.1.2",
-    "node-red-contrib-home-assistant-websocket": "0.75.0",
+    "node-red-contrib-home-assistant-websocket": "0.77.0",
     "node-red-contrib-stoptimer": "0.0.7",
     "node-red-contrib-time-range-switch": "1.2.0",
     "node-red-contrib-timecheck": "1.1.0",
